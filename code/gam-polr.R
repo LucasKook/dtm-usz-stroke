@@ -46,8 +46,8 @@ lines(x = nage, coef(tm)["age"] * nage - mean(coef(tm)["age"] * nage), col = 2)
 
 # Keras model -------------------------------------------------------------
 
-X <- dmltbrats:::.rm_int(model.matrix(fm, polr_dat))
-age <- dmltbrats:::.rm_int(model.matrix(~ age, polr_dat))
+X <- ontram:::.rm_int(model.matrix(fm, polr_dat))
+age <- ontram:::.rm_int(model.matrix(~ age, polr_dat))
 Y <- to_categorical(model.response(model.frame(fm, polr_dat)))
 
 B <- 50
