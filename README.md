@@ -33,3 +33,9 @@ In this `README`, we briefly explain the functionalities of all scripts.
   manuscript.
 
 - `sample-size-extrapolation.R`: Code for producing the data for Fig. 7.
+
+The `ontram` package used for fitting the ordinal DTMs can be installed via
+
+```r
+remotes::install_github("https://github.com/LucasKookUZH/ontram-pkg")
+```
