@@ -240,11 +240,8 @@ run_experiment <- function(mod = c("cs", "ci", "cswox", "mcc"), fml = fm, B = 50
 
     ### Compile model
     if (mod != "mcc") {
-      # loss <- k_ontram_loss(ncol(Y))
-      loss <- k_ontram_rps(ncol(Y))
-      met <- metric_nll(ncol(Y))
-      compile(m, optimizer = optimizer_adam(lr = lr), loss = loss,
-              metric = c(met))
+      loss <- k_ontram_loss(ncol(Y))
+      compile(m, optimizer = optimizer_adam(lr = lr), loss = loss)
     } else {
       loss <- "categorical_crossentropy"
       compile(m, optimizer = optimizer_adam(lr = lr), loss = loss,
