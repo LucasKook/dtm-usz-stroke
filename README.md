@@ -1,7 +1,8 @@
 # dtm-usz-stroke
 
 Code for reproducing the results in "Deep transformation models for predicting
-functional outcome after acute ischemic stroke".
+functional outcome after acute ischemic stroke". The preprint is currently under
+review and will be made available on arXiv shortly.
 
 We use the following convention for the names of the models used in the
 manuscript:
