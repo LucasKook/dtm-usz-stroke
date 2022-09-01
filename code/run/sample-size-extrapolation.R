@@ -2,7 +2,7 @@
 # LK
 # Oct 21
 
-source("k_ontram-experiments.R", echo = TRUE)
+source("k_ontram_experiments.R", echo = TRUE)
 
 # Params ------------------------------------------------------------------
 
@@ -11,8 +11,8 @@ fm <- mrs3 ~ age + sexm + nihss_baseline + mrs_before + stroke_beforey + tia_bef
   rf_atrial_fibrillationy + rf_chdy
 
 ## Paths
-bpath <- "../data/dicom-3d.h5"
-bpathx <- "../data/baseline_data_zurich_prepared.csv"
+bpath <- "../../data/dicom-3d.h5"
+bpathx <- "../../data/baseline_data_zurich_prepared.csv"
 
 # Read data ---------------------------------------------------------------
 
