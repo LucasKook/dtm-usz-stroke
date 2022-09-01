@@ -21,14 +21,17 @@ Due to the restricted access to the medical data and the high computational cost
 of fitting deep transformation models (and their ensemble versions), we ensure
 three "levels of reproducibility".
 
-1. Full reproducibility `make full-repro`: Fits all ensembles and reproduces all
-   results.
+1. Full reproducibility `make full-repro`: Fits all models from scratch and
+   reproduces all figures in the paper. Not possible to run on a machine without
+   access to at least one GPU.
 
 2. Partial reproducibility `make partial-repro`: Takes predictions from fitted
    objects and reproduces the _analysis_ (i.e., bootstrap CIs) and _figures_.
+   Possible to run on a machine with >=16GB of RAM and without GPU.
 
 3. Figure reproducibility `make figure-repro`: Reproduces the figures with the
-   intermediate results saved in this repository.
+   intermediate results saved in this repository. Possible to run on a standard
+   machine.
 
 ## Folder structure
 
