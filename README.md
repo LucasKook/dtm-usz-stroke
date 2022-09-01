@@ -13,6 +13,7 @@ necessary dependencies can be installed via
 ```
 make dependencies
 ```
+or by sourcing `dependencies.R` manually.
 
 ## Reproduce results
 
@@ -56,3 +57,6 @@ three "levels of reproducibility".
   - `distr-predictors.R`:
   - `distr-predictors.R`:
 
+## Session info
+
+TODO
