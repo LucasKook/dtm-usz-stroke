@@ -1,6 +1,55 @@
 
-if(!require(remotes))
-  install.packages("remotes")
+# CRAN packages
 
-remotes::install_github("LucasKookUZH/ontram-pkg")
+if (!require(remotes))
+  install.packages("remotes")
+if (!require(Hmisc))
+  install.packages("Hmisc")
+if (!require(boot))
+  install.packages("boot")
+if (!require(caret))
+  install.packages("caret")
+if (!require(colorspace))
+  install.packages("colorspace")
+if (!require(dplyr))
+  install.packages("dplyr")
+if (!require(etram))
+  install.packages("etram")
+if (!require(ggbeeswarm))
+  install.packages("ggbeeswarm")
+if (!require(ggplot2))
+  install.packages("ggplot2")
+if (!require(ggpubr))
+  install.packages("ggpubr")
+if (!require(mgcv))
+  install.packages("mgcv")
+if (!require(ontram))
+  install.packages("ontram")
+if (!require(patchwork))
+  install.packages("patchwork")
+if (!require(readr))
+  install.packages("readr")
+if (!require(rhdf5))
+  install.packages("rhdf5")
+if (!require(stringr))
+  install.packages("stringr")
+if (!require(tidyr))
+  install.packages("tidyr")
+if (!require(tidyverse))
+  install.packages("tidyverse")
+if (!require(tram))
+  install.packages("tram")
+
+# BIOC packages
+
+if (!require("BiocManager"))
+  install.packages("BiocManager")
+
+if (!require("rhdf5"))
+  BiocManager::install("rhdf5")
+
+# Github packages
+
+remotes::install_github("LucasKook/ontram-pkg")
+remotes::install_github("LucasKook/interpretable-deep-ensembles/etram")
 
