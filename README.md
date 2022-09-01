@@ -1,42 +1,58 @@
-# dtm-usz-stroke
 
-Code for reproducing the results in "Deep transformation models for predicting
-functional outcome after acute ischemic stroke". The preprint is currently under
-review and will be made available on arXiv shortly.
+Deep transformation models for predicting functional outcome after acute ischemic stroke
+========================================================================================
 
-We use the following convention for the names of the models used in the
-manuscript:
+Code for reproducing the results in [arXiv:2206.13302 "Deep transformation
+models for predicting functional outcome after acute ischemic
+stroke"](https://arxiv.org/abs/2206.13302)
 
-| Manuskript     | Code     |
-| -------------- | -------- |
-| CI[B]-LS[x]    | `ci`     |
-| CI[B]-LS[mRS]  | `ci-mrs` |
-| SI-CS[B]-LS[x] | `cs`     |
-| SI-CS[B]       | `cs-wox` |
-| MCC            | `mcc`    |
+## Install dependencies
 
-
-In this `README`, we briefly explain the functionalities of all scripts.
-
-- `baseline-stratified-models.R`: Generates predictions for the unconditional
-  (SI) model and some other baseline-adjusted Polr models.
-
-- `censored-logLik*.R`: Scripts for generating the binary mRS predictions from
-  all ordinal models.
-
-- `<model>.R`: Scripts for running the experiments for all models in the above
-  table.
-
-- `run-experiments.R`: Main script containing the functions for running the
-  experiments. This script is called by all `<model>.R` scripts.
-
-- `gam-polr.R`: Contains the code for producing the data for Fig. 6 from the
-  manuscript.
-
-- `sample-size-extrapolation.R`: Code for producing the data for Fig. 7.
-
-The `ontram` package used for fitting the ordinal DTMs can be installed via
-
-```r
-remotes::install_github("https://github.com/LucasKookUZH/ontram-pkg")
+Deep transformation ensembles can be fitted using the `ontram` package. All
+necessary dependencies can be installed via
 ```
+make dependencies
+```
+
+## Reproduce results
+
+Due to the restricted access to the medical data and the high computational cost
+of fitting deep transformation models (and their ensemble versions), we ensure
+three "levels of reproducibility".
+
+1. Full reproducibility `make full-repro`: Fits all ensembles and reproduces all
+   results.
+
+2. Partial reproducibility `make partial-repro`: Takes predictions from fitted
+   objects and reproduces the _analysis_ (i.e., bootstrap CIs) and _figures_.
+
+3. Figure reproducibility `make figure-repro`: Reproduces the figures with the
+   intermediate results saved in this repository.
+
+## Folder structure
+
+`./code`: 
+
+
+- `analysis/`:
+
+  - `cal-binary-stroke.R`:
+  - `cal-ordinal-stroke.R`:
+  - `ci-binary-stroke.R`:
+  - `ci-ordinal-stroke.R`:
+  - `merge-stroke.R`:
+  - `perf-stroke.R`:
+
+- `functions/functions_DE.R`:
+
+- `run/`:
+
+  - `run-stroke.R`:
+  - `sample-size-extrapolation.R`: Code for producing the data for Fig. 7.
+
+- `visualize/`:
+
+  - `distr-predictors.R`:
+  - `distr-predictors.R`:
+  - `distr-predictors.R`:
+
