@@ -1,7 +1,7 @@
+
 # Functions
 # Andrea Goetschi
 # April 2022
-
 
 # Functions to create plots -----------------------------------------------
 
@@ -291,26 +291,21 @@ pl_or <- function(indiv,
       (if (avg_across_spl) geom_point(data = pooled,
                                       aes(x = var, y = avg,
                                           group = interaction(var, mod), color = mod),
-                                      # position = position_dodge(width = 0.7),
                                       position = position_dodgenudge(x = -0.48, y = 0, width = 0.1),
                                       shape = "diamond",
                                       size = 2.5, alpha = 0.4, inherit.aes = FALSE)) +
       (if (avg_across_spl) geom_errorbar(data = pooled,
                                          aes(x = var, ymin = lwr, ymax = upr,
                                              group = interaction(var, mod), color = mod),
-                                         # position = position_dodge(width = 0.7),
                                          position = position_dodgenudge(x = -0.48, y = 0, width = 0.5),
                                          width = 0.1,
                                          size = 0.8, alpha = 0.4, inherit.aes = FALSE)) +
-      # geom_beeswarm(dodge.width = 0.75, size = 0.5, alpha = 0.7) +
       (if (members) geom_beeswarm(data = indiv %>% filter(mod != "sils"),
                                   aes(x = var, y = lor,
                                       group = interaction(var, mod, spl)),
-                                  dodge.width = 0.75, size = 0.3, alpha = 0.2, #dodge.width = 0.75
+                                  dodge.width = 0.75, size = 0.3, alpha = 0.2,
                                   inherit.aes = FALSE)) +
       (if (refline) geom_hline(yintercept = if (!e) 0 else 1, alpha = 0.2)) +
-      # labs(x = "", y = parse(text = if(!e) "lower~risk%<-%hat(beta)%->%higher~risk"
-      #                        else "lower~risk%<-%exp(hat(beta))%->%higher~risk")) +
       labs(x = "", y = parse(text = if(!e) "hat(beta)"
                              else "exp(hat(beta))")) +
       (if (!is.null(ylim)) lims(y = ylim)) +
@@ -333,7 +328,6 @@ pl_or <- function(indiv,
       (if (avg_across_spl) geom_point(data = pooled,
                                       aes(x = var, y = avg,
                                           group = interaction(var, mod), color = mod),
-                                      # position = position_dodge(width = 0.7),
                                       position = position_dodge(width = 0.75),
                                       shape = "diamond",
                                       size = 2, inherit.aes = FALSE)) +
@@ -343,8 +337,6 @@ pl_or <- function(indiv,
                                          position = position_dodge(width = 0.75), width = width,
                                          size = 0.5, inherit.aes = FALSE)) +
       (if (refline) geom_hline(yintercept = if (!e) 0 else 1, alpha = 0.2)) +
-      # labs(x = "", y = parse(text = if(!e) "lower~risk%<-%hat(beta)%->%higher~risk"
-      #                        else "lower~risk%<-%exp(hat(beta))%->%higher~risk")) +
       labs(x = "", y = parse(text = if(!e) "hat(beta)"
                              else "exp(hat(beta))")) +
       (if (!is.null(ylim)) lims(y = ylim)) +
@@ -418,13 +410,6 @@ pl_cal <- function(avg, avg_ref = NULL, spl = NULL, spl_ref = NULL, indiv = NULL
     (if(!is.null(avg_ref)) geom_errorbar(data = avg_ref, aes(x = midpoint, ymin = lwr, ymax = upr),
                                          color = col_ref, size = ebarsize, inherit.aes = FALSE,
                                          width = 0.06)) +
-    # geom_point(data = spl, aes(x = midpoint, y = prop,
-    #                                color = method,
-    #                                group = interaction(spl, method)),
-    #            alpha = 0.2, size = 0.25, inherit.aes = FALSE) +
-    # geom_point(data = spl_ref, aes(x = midpoint, y = prop,
-    #                            group = spl),
-    #            alpha = 0.2, size = 0.25, inherit.aes = FALSE) +
     (if (!is.null(indiv)) geom_line(data = indiv, aes(x = midpoint, y = prop,
                                                       group = interaction(ens, spl)),
                                     alpha = 0.2, size = 0.25, inherit.aes = FALSE)) +
@@ -457,8 +442,6 @@ pl_cal <- function(avg, avg_ref = NULL, spl = NULL, spl_ref = NULL, indiv = NULL
     scale_color_manual(name = legend_title,
                        labels = ens_labs,
                        values = col_ens,
-                       # guide = guide_legend(byrow = FALSE,
-                       #                      reverse = TRUE),
                        breaks = levels(avg$method)) +
     theme_bw() +
     (if (!is.null(t.size)) theme(text = element_text(size = t.size))) +
@@ -564,8 +547,6 @@ boot_ci <- function(cdf_all, y_true_all, met_ref,
     f <- paste0("wboot_", mod, loss, "_", abb, ".csv")
   }
   write.csv(paste0(out_dir, f), row.names = FALSE)
-  # print(f)
-  # return(ci)
 }
 
 # Bootstrap for log OR ----------------------------------------------------
@@ -680,13 +661,12 @@ cal_ens <- function(cdf, y_true, cuts = 11, cumulative = TRUE, pool = TRUE, emp 
   lys_cal <- list()
   start <- 1
   if (cumulative) end <- K-1 else end <- K
-  #if (K == 2) start <- end <- 2
   for (cl in start:end) {
     if (cumulative) {
-      yt <- factor(apply(y_true, 1, function(x) sum(x[start:cl])), levels = c(0, 1)) #levels = c(1, 0)) P(Y<y_k)
+      yt <- factor(apply(y_true, 1, function(x) sum(x[start:cl])), levels = c(0, 1)) # levels = c(1, 0)) P(Y<y_k)
       yp <- 1 - apply(pdf, 1, function(x) sum(x[start:cl]))
     } else {
-      yt <- factor(y_true[, cl], levels = c(0, 1)) #levels = c(1, 0))
+      yt <- factor(y_true[, cl], levels = c(0, 1))
       yp <- 1 - pdf[, cl]
     }
     df <- data.frame(true = yt, pred = yp)
@@ -784,11 +764,8 @@ avg_across_spl <- function(lys_splitted) {
       as.matrix(z[, c("prop", "lwr", "upr", "cases", "midpoint")])
     })
     avg <- apply(simplify2array(tmp), 1:2, mean)
-    #ci <- apply(simplify2array(tmp), 1:2, smean.cl.boot)
     data.frame(bin = if (length(unique(x$bin)) != length(avg[, "prop"])) NA else unique(x$bin),
                prop = avg[, "prop"],
-               #lwr = ci["Lower", , "prop"],
-               #upr = ci["Upper", , "prop"],
                lwr = avg[, "lwr"],
                upr = avg[, "upr"],
                cases = avg[, "cases"],

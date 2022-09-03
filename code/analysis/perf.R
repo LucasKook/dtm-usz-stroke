@@ -1,6 +1,5 @@
-# All performance metrics of equally weighted ensembles
-# Andrea Goetschi
-# April 2022
+
+# Calculate performance metrics
 
 # Dependencies ------------------------------------------------------------
 
@@ -8,8 +7,8 @@ library(etram)
 
 # Directories -------------------------------------------------------------
 
-source("functions/functions_DE.R")
-in_dir <- out_dir <- "results/"
+source("code/functions/functions_DE.R")
+in_dir <- out_dir <- "code/results/"
 
 # Params ------------------------------------------------------------------
 

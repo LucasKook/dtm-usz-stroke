@@ -39,6 +39,8 @@ if (!require(tidyverse))
   install.packages("tidyverse")
 if (!require(tram))
   install.packages("tram")
+if (!require(tram))
+  install.packages("stringr")
 
 # BIOC packages
 

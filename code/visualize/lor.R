@@ -1,6 +1,5 @@
-# log odds-ratios stroke
-# Andrea Goetschi
-# April 2022
+
+# Code to produce Figure 6
 
 # Dep ---------------------------------------------------------------------
 
@@ -12,10 +11,10 @@ library(tram)
 
 # Params ------------------------------------------------------------------
 
-source("functions/functions_DE.R")
+source("code/functions/functions_DE.R")
 
-in_dir <- "results/"
-out_dir <- "results/figures/"
+in_dir <- "code/results/"
+out_dir <- "code/results/figures/"
 
 # Load results ------------------------------------------------------------
 
@@ -26,6 +25,6 @@ indivnll$mod <- factor(indivnll$mod, levels = c("sils", "silscs", "cils"))
 
 ornll <- pl_or(indiv = indivnll, width = 0.5, refline = TRUE,
                weighted = FALSE, members = FALSE, lbetvar = T,
-               pooled_only = T) # t.size = 15, 
+               pooled_only = T)
 ornll
 ggsave(paste0(out_dir, "figure6.pdf"), height = 6.5, width = 9)

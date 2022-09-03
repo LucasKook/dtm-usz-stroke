@@ -1,4 +1,8 @@
 
+# Code to produce Figure B1
+# Figure B1 cannot be reproduced since the data 
+# is not available (sensitive data)
+
 # Deps --------------------------------------------------------------------
 
 library(rhdf5)
@@ -12,7 +16,7 @@ library(ggpubr)
 path_img <- "~/data-sets/stroke-lh/dicom-3d.h5"
 path_tab <- "~/data-sets/stroke-lh/baseline_data_zurich_prepared.csv"
 path_tab_raw <- "~/../hezo/stroke_perfusion/data/baseline_data_DWI.csv"
-out_dir <- "experiments/results/stroke/figures_transfer/"
+out_dir <- "code/results/figures/"
 
 # Functions ---------------------------------------------------------------
 
@@ -109,7 +113,7 @@ pl_nihss_baseline <- ggplot(dat_xy_raw, aes(x = nihss, fill = mrs3)) +
         axis.title.y = element_text(size = 12),
         axis.text.y = element_text(size = 11))
 
-## ALL predictors
+# Code to produce Figure B1
 ggarrange(pl_mrs_before, pl_nihss_baseline, pl_stroke_beforey,
           pl_tia_beforey, pl_rf_hypertoniay, pl_rf_diabetesy,
           pl_rf_hypercholesterolemiay, pl_rf_smokery, pl_rf_atrial_fibrillationy,
