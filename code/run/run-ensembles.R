@@ -1,6 +1,5 @@
-# Run all experiments
-# Andrea Goetschi
-# April 2022
+
+# Run ensembles of deep transformation models
 
 # Reproducibility ---------------------------------------------------------
 
@@ -23,7 +22,7 @@ library(etram)
 
 im_path <- "~/data-sets/stroke-lh/dicom-3d.h5"
 path <- "~/data-sets/stroke-lh/baseline_data_zurich_prepared.csv"
-out_dir <- "results/"
+out_dir <- "code/results/"
 
 # Params ------------------------------------------------------------------
 
