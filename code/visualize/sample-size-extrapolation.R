@@ -9,7 +9,8 @@ library(ggpubr)
 library(ggbeeswarm)
 theme_set(theme_bw() + theme(legend.position = "top"))
 
-inp <- file.path("intermediate-results", "CI-next-lr4")
+in_dir <- ifelse(dir.exists("results"), "results", "intermediate-results")
+inp <- file.path(in_dir, "CI-next-lr4")
 out <- "figures"
 
 if (!dir.exists(out))

@@ -9,7 +9,7 @@ library(ggbeeswarm)
 library(rhdf5)
 theme_set(theme_bw() + theme(legend.position = "top"))
 
-inp <- "intermediate-results"
+inp <- ifelse(dir.exists("results"), "results", "intermediate-results")
 files <- file.path(inp, "gam-polr.csv")
 
 out_dir <- "figures"
@@ -46,4 +46,4 @@ ggplot(dat, aes(x = age, y = nn, group = model, color = "black")) +
   ylim(-2, 2) +
   geom_rug(aes(x = age), inherit.aes = FALSE, data = odat, alpha = 0.3)
 
-ggsave(file.path(out_dir, "vis.pdf"), height = 4.5, width = 6)
+ggsave(file.path(out_dir, "figure7.pdf"), height = 4.5, width = 6)

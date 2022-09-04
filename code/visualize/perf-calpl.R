@@ -13,7 +13,7 @@ library(stringr)
 
 source(file.path("code", "functions", "functions_DE.R"))
 
-in_dir <- "intermediate-results"
+in_dir <- ifelse(dir.exists("results"), "results", "intermediate-results")
 out_dir <- "figures"
 
 if (!dir.exists(out_dir))
