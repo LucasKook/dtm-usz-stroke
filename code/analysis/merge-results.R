@@ -14,7 +14,7 @@ library(stringr)
 
 im_path <- file.path("data", "dicom-3d.h5")
 path <- file.path("data", "baseline_data_zurich_prepared.csv")
-in_dir <- "intermediate-results"
+in_dir <- file.path("intermediate-results", "raw-results")
 out_dir <- "results"
 
 if (!dir.exists(out_dir))

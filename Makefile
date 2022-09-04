@@ -16,7 +16,7 @@ partial-repro: dependencies
 	$(SR) code/analysis/ci-binary.R
 	$(SR) code/analysis/ci-ordinal.R
 	$(SR) code/analysis/perf.R
-	# $(SR) code/analysis/merge-results.R
+	$(SR) code/analysis/merge-results.R
 	make figure-repro
 
 figure-repro: dependencies
