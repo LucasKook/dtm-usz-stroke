@@ -8,8 +8,12 @@ library(boot)
 
 # Directories -------------------------------------------------------------
 
-source("code/functions/functions_DE.R")
-in_dir <- out_dir <- "code/results/"
+source(file.path("code", "functions", "functions_DE.R"))
+in_dir <- "intermediate-results"
+out_dir <- "results"
+
+if (!dir.exists(out_dir))
+  dir.create(out_dir)
 
 # Params ------------------------------------------------------------------
 
@@ -28,18 +32,17 @@ K <- 7
 # Load results ------------------------------------------------------------
 
 ## all CDF
-cdf_files <- list.files(path = in_dir,
-                        pattern = paste0("stroke_merged_cdf.*\\.csv$"))
+cdf_files <- list.files(path = in_dir, pattern = "stroke_merged_cdf.*\\.csv$")
 cdf_files <- lapply(cdf_files, function(fname) {
-  read.csv(paste0(in_dir, fname))
+  read.csv(file.path(in_dir, fname))
 })
 all_cdf <- do.call("rbind", cdf_files)
 
 ## all Y
-all_y <- read.csv(paste0(in_dir, "stroke_merged_y.csv"))
+all_y <- read.csv(file.path(in_dir, "stroke_merged_y.csv"))
 
 ## Load results of reference model SI-LS
-met_sils <-  read.csv(file = paste0(in_dir, "met_", fname_silsnll, ".csv"))
+met_sils <- read.csv(file = file.path(in_dir, paste0("met_", fname_silsnll, ".csv")))
 
 # Confidence interval -----------------------------------------------------
 

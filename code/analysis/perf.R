@@ -7,8 +7,9 @@ library(etram)
 
 # Directories -------------------------------------------------------------
 
-source("code/functions/functions_DE.R")
-in_dir <- out_dir <- "code/results/"
+source(file.path("code", "functions", "functions_DE.R"))
+in_dir <- "intermediate-results"
+out_dir <- "results"
 
 # Params ------------------------------------------------------------------
 
@@ -30,23 +31,23 @@ fname_silsnll <- "stroke_sils"
 
 ## all CDF
 cdf_files <- list.files(path = in_dir,
-                        pattern = paste0("stroke_merged_cdf.*\\.csv$"))
+                        pattern = "stroke_merged_cdf.*\\.csv$")
 cdf_files <- lapply(cdf_files, function(fname) {
-  read.csv(paste0(in_dir, fname))
+  read.csv(file.path(in_dir, fname))
 })
 all_cdf <- do.call("rbind", cdf_files)
 
 ## all binary CDF
 bincdf_files <- list.files(path = in_dir,
-                           pattern = paste0("stroke_merged_bincdf.*\\.csv$"))
+                           pattern = "stroke_merged_bincdf.*\\.csv$")
 bincdf_files <- lapply(bincdf_files, function(fname) {
-  read.csv(paste0(in_dir, fname))
+  read.csv(file.path(in_dir, fname))
 })
 all_bincdf <- do.call("rbind", bincdf_files)
 
 ## all Y
-all_y <- read.csv(paste0(in_dir, "stroke_merged_y.csv"))
-all_biny <- read.csv(paste0(in_dir, "stroke_merged_biny.csv"))
+all_y <- read.csv(file.path(in_dir, "stroke_merged_y.csv"))
+all_biny <- read.csv(file.path(in_dir, "stroke_merged_biny.csv"))
 
 ## CDFs all splits
 
@@ -98,34 +99,45 @@ met_silscsnll_all <- get_metrics_allspl(lys_cdf_all = cdftest_silscsnll, y_true_
 indi_silscsnll_all <- get_indiv_metrics_allspl(lys_cdf_all = cdftest_silscsnll, y_true_all = y_true_all,
                                                metrics = "all")
 
-write.csv(met_silscsnll_all, file = paste0(out_dir, "met_", fname_silscsnll, ".csv"), row.names = FALSE)
-write.csv(indi_silscsnll_all, file = paste0(out_dir, "indivmet_", fname_silscsnll, ".csv"), row.names = FALSE)
+write.csv(met_silscsnll_all, 
+          file = file.path(out_dir, paste0("met_", fname_silscsnll, ".csv")),
+                           row.names = FALSE)
+write.csv(indi_silscsnll_all, 
+          file = file.path(out_dir, paste0("indivmet_", fname_silscsnll, ".csv")),
+                           row.names = FALSE)
 
 ## CILS ##########################################################
 
-met_cilsnll_all <- get_metrics_allspl(lys_cdf_all = cdftest_cilsnll, y_true_all = y_true_all,
-                                      type = "all", topk = TRUE, order_metric = "nll",
-                                      lys_cdf_val_all = cdfval_cilsnll, y_true_val_all = y_true_val_all,
-                                      metrics = "all")
+met_cilsnll_all <- get_metrics_allspl(
+  lys_cdf_all = cdftest_cilsnll, y_true_all = y_true_all,
+  type = "all", topk = TRUE, order_metric = "nll",
+  lys_cdf_val_all = cdfval_cilsnll, y_true_val_all = y_true_val_all,
+  metrics = "all"
+)
 
-indi_cilsnll_all <- get_indiv_metrics_allspl(lys_cdf_all = cdftest_cilsnll, y_true_all = y_true_all,
-                                             metrics = "all")
+indi_cilsnll_all <- get_indiv_metrics_allspl(
+  lys_cdf_all = cdftest_cilsnll, y_true_all = y_true_all, metrics = "all"
+)
 
-write.csv(met_cilsnll_all, file = paste0(out_dir, "met_", fname_cilsnll, ".csv"), row.names = FALSE)
-write.csv(indi_cilsnll_all, file = paste0(out_dir, "indivmet_", fname_cilsnll, ".csv"), row.names = FALSE)
+write.csv(met_cilsnll_all, file = file.path(out_dir, paste0("met_", fname_cilsnll, ".csv")),
+                                            row.names = FALSE)
+write.csv(indi_cilsnll_all, file = file.path(out_dir, paste0("indivmet_", fname_cilsnll),
+                                                             ".csv"), row.names = FALSE)
 
 #
 
-met_cilsmrsblnll_all <- get_metrics_allspl(lys_cdf_all = cdftest_cilsmrsblnll, y_true_all = y_true_all,
-                                           type = "all", topk = TRUE, order_metric = "nll",
-                                           lys_cdf_val_all = cdfval_cilsmrsblnll, y_true_val_all = y_true_val_all,
-                                           metrics = "all")
+met_cilsmrsblnll_all <- get_metrics_allspl(
+  lys_cdf_all = cdftest_cilsmrsblnll, y_true_all = y_true_all,
+  type = "all", topk = TRUE, order_metric = "nll",
+  lys_cdf_val_all = cdfval_cilsmrsblnll, y_true_val_all = y_true_val_all,
+  metrics = "all"
+)
 
 indi_cilsmrsblnll_all <- get_indiv_metrics_allspl(lys_cdf_all = cdftest_cilsmrsblnll, y_true_all = y_true_all,
                                                   metrics = "all")
 
-write.csv(met_cilsmrsblnll_all, file = paste0(out_dir, "met_", fname_cilsmrsblnll, ".csv"), row.names = FALSE)
-write.csv(indi_cilsmrsblnll_all, file = paste0(out_dir, "indivmet_", fname_cilsmrsblnll, ".csv"), row.names = FALSE)
+write.csv(met_cilsmrsblnll_all, file = file.path(out_dir, paste0("met_", fname_cilsmrsblnll, ".csv")), row.names = FALSE)
+write.csv(indi_cilsmrsblnll_all, file = file.path(out_dir, paste0("indivmet_", fname_cilsmrsblnll, ".csv")), row.names = FALSE)
 
 ## SICS ##########################################################
 
@@ -137,8 +149,8 @@ met_sicsnll_all <- get_metrics_allspl(lys_cdf_all = cdftest_sicsnll, y_true_all 
 indi_sicsnll_all <- get_indiv_metrics_allspl(lys_cdf_all = cdftest_sicsnll, y_true_all = y_true_all,
                                              metrics = "all")
 
-write.csv(met_sicsnll_all, file = paste0(out_dir, "met_", fname_sicsnll, ".csv"), row.names = FALSE)
-write.csv(indi_sicsnll_all, file = paste0(out_dir, "indivmet_", fname_sicsnll, ".csv"), row.names = FALSE)
+write.csv(met_sicsnll_all, file = file.path(out_dir, paste0("met_", fname_sicsnll, ".csv")), row.names = FALSE)
+write.csv(indi_sicsnll_all, file = file.path(out_dir, paste0("indivmet_", fname_sicsnll, ".csv")), row.names = FALSE)
 
 ## CI ############################################################
 
@@ -150,8 +162,8 @@ met_cinll_all <- get_metrics_allspl(lys_cdf_all = cdftest_cinll, y_true_all = y_
 indi_cinll_all <- get_indiv_metrics_allspl(lys_cdf_all = cdftest_cinll, y_true_all = y_true_all,
                                            metrics = "all")
 
-write.csv(met_cinll_all, file = paste0(out_dir, "met_", fname_cinll, ".csv"), row.names = FALSE)
-write.csv(indi_cinll_all, file = paste0(out_dir, "indivmet_", fname_cinll, ".csv"), row.names = FALSE)
+write.csv(met_cinll_all, file = file.path(out_dir, paste0("met_", fname_cinll, ".csv")), row.names = FALSE)
+write.csv(indi_cinll_all, file = file.path(out_dir, paste0("indivmet_", fname_cinll, ".csv")), row.names = FALSE)
 
 # 
 
@@ -163,8 +175,8 @@ met_cimrsbinarynll_all <- get_metrics_allspl(lys_cdf_all = cdftest_cimrsbinarynl
 indi_cimrsbinarynll_all <- get_indiv_metrics_allspl(lys_cdf_all = cdftest_cimrsbinarynll, y_true_all = y_true_all_bin,
                                                     metrics = "all", cutoff = 1)
 
-write.csv(met_cimrsbinarynll_all, file = paste0(out_dir, "met_", fname_cimrsbinarynll, ".csv"), row.names = FALSE)
-write.csv(indi_cimrsbinarynll_all, file = paste0(out_dir, "indivmet_", fname_cimrsbinarynll, ".csv"), row.names = FALSE)
+write.csv(met_cimrsbinarynll_all, file = file.path(out_dir, paste0("met_", fname_cimrsbinarynll, ".csv")), row.names = FALSE)
+write.csv(indi_cimrsbinarynll_all, file = file.path(out_dir, paste0("indivmet_", fname_cimrsbinarynll, ".csv")), row.names = FALSE)
 
 ## SI ###########################################################
 
@@ -172,7 +184,7 @@ met_si_all <- get_metrics_allspl(lys_cdf_all = cdftest_si, y_true_all = y_true_a
                                  topk = FALSE, metrics = "all")
 
 write.csv(met_si_all[met_si_all$method == "linear", ],
-          file = paste0(out_dir, "met_", fname_si, ".csv"), row.names = FALSE)
+          file = file.path(out_dir, paste0("met_", fname_si, ".csv")), row.names = FALSE)
 
 ## SILS #########################################################
 
@@ -180,4 +192,4 @@ met_sils_all <- get_metrics_allspl(lys_cdf_all = cdftest_sils, y_true_all = y_tr
                                    topk = FALSE, metrics = "all")
 
 write.csv(met_sils_all[met_sils_all$method == "linear", ],
-          file = paste0(out_dir, "met_", fname_sils, ".csv"), row.names = FALSE)
+          file = file.path(out_dir, paste0("met_", fname_sils, ".csv")), row.names = FALSE)

@@ -12,9 +12,13 @@ library(stringr)
 
 # Directories -------------------------------------------------------------
 
-im_path <- "~/data-sets/stroke-lh/dicom-3d.h5"
-path <- "~/data-sets/stroke-lh/baseline_data_zurich_prepared.csv"
-in_dir <- out_dir <- "code/results/"
+im_path <- file.path("data", "dicom-3d.h5")
+path <- file.path("data", "baseline_data_zurich_prepared.csv")
+in_dir <- "intermediate_results"
+out_dir <- "results"
+
+if (!dir.exists(out_dir))
+  dir.create(out_dir)
 
 # Params ------------------------------------------------------------------
 
@@ -126,10 +130,14 @@ lapply(l, function(x) {
   cdf <- bind_rows(cdf_val, cdf_test)
   
   if (x != "stroke_cimrsbinary_lossnll_wsno_augyes") {
-    write.csv(cdf, paste0(out_dir, "stroke_merged_cdf_", mname, ".csv"), row.names = FALSE)
-    write.csv(bincdf_test, paste0(out_dir, "stroke_merged_bincdf_", mname, ".csv"), row.names = FALSE)
+    write.csv(cdf, file.path(out_dir, paste0("stroke_merged_cdf_", mname, ".csv")),
+                             row.names = FALSE)
+    write.csv(bincdf_test, file.path(out_dir, 
+                                     paste0("stroke_merged_bincdf_", mname, ".csv")),
+                                     row.names = FALSE)
   } else {
-    write.csv(cdf, paste0(out_dir, "stroke_merged_bincdf_", mname, ".csv"), row.names = FALSE)
+    write.csv(cdf, file.path(out_dir, paste0("stroke_merged_bincdf_", mname, ".csv")),
+                             row.names = FALSE)
   }
 })
 
@@ -162,8 +170,8 @@ ybin_true_test_all <- merge_y(ybin, "test", ridx, splits)
 
 y_all <- bindr("y_true")
 ybin_all <- bindr("ybin_true")
-write.csv(y_all, paste0(out_dir, "stroke_merged_y.csv"), row.names = FALSE)
-write.csv(ybin_all, paste0(out_dir, "stroke_merged_biny.csv"), row.names = FALSE)
+write.csv(y_all, file.path(out_dir, "stroke_merged_y.csv"), row.names = FALSE)
+write.csv(ybin_all, file.path(out_dir, "stroke_merged_biny.csv"), row.names = FALSE)
 
 # Combine log OR ----------------------------------------------------------
 
@@ -172,7 +180,7 @@ merge_lor <- function(fn) {
   f <- list.files(path = in_dir,
                   pattern = paste0(fn, "_lor"))
   lor <-  lapply(f, function(fname) {
-    read.csv(paste0(in_dir, fname))
+    read.csv(file.path(in_dir, fname))
   })
 
   lor <- do.call("rbind", lor)
@@ -185,7 +193,7 @@ merge_lor <- function(fn) {
   } else {
     lor$spl <- factor(rep(1:splits, each = ensembles))
     
-    w <- read.csv(paste0(in_dir, "w_", fn, ".csv"))
+    w <- read.csv(file.path(in_dir, paste0("w_", fn, ".csv")))
     w_trf <- extract_w(w, meth = "trafo")
     w_trf <- w_trf %>% do.call("rbind", .)
     
@@ -207,4 +215,4 @@ indivlor_cils <- merge_lor(fname_cilsnll)
 # Combine -----------------------------------------------------------------
 
 indivnll <- bindr(pat1 = "indivlor")
-write.csv(indivnll, file = paste0(out_dir, "lor_nll.csv"), row.names = FALSE)
+write.csv(indivnll, file = file.path(out_dir, "lor_nll.csv"), row.names = FALSE)

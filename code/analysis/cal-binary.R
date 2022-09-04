@@ -9,8 +9,12 @@ library(Hmisc)
 
 # Params ------------------------------------------------------------------
 
-source("code/functions/functions_DE.R")
-in_dir <- out_dir <- "code/results/"
+source(file.path("code", "functions", "functions_DE.R"))
+in_dir <- "intermediate-results"
+out_dir <- "results"
+
+if (!dir.exists(out_dir))
+  dir.create(out_dir)
 
 fname_silscsnll <- "stroke_silscs_lossnll_wsyes_augyes"
 fname_cilsnll <- "stroke_cils_lossnll_wsyes_augyes"
@@ -33,15 +37,14 @@ cutf <- function(x) {
 # Load results ------------------------------------------------------------
 
 ## all CDF
-cdf_files <- list.files(path = in_dir,
-                        pattern = paste0("stroke_merged_bincdf.*\\.csv$"))
+cdf_files <- list.files(path = in_dir, pattern = "stroke_merged_bincdf.*\\.csv$")
 cdf_files <- lapply(cdf_files, function(fname) {
-  read.csv(paste0(in_dir, fname))
+  read.csv(file.path(in_dir, fname))
 })
 all_cdf <- do.call("rbind", cdf_files)
 
 ## all Y
-all_y <- read.csv(paste0(in_dir, "stroke_merged_biny.csv"))
+all_y <- read.csv(file.path(in_dir, "stroke_merged_biny.csv"))
 
 # Calibration -------------------------------------------------------------
 
@@ -61,7 +64,8 @@ args_nll <- data.frame(cdf_all = "all_cdf", y_true_all = "all_y",
                                rep(FALSE, 2)),
                        cuts_fun = "cutf",
                        fname = c(rep(c(fname_silscsnll, fname_cilsnll, fname_cilsmrsblnll,
-                                       fname_sicsnll, fname_cinll, fname_cimrsbinarynll), each = 10),
+                                       fname_sicsnll, fname_cinll, fname_cimrsbinarynll),
+                                     each = 10),
                                  rep(c(fname_silsnll), each = 2)),
                        in_dir = in_dir)
 
@@ -70,4 +74,4 @@ res_nll <- bind_rows(res_nll)
 
 # Save results ------------------------------------------------------------
 
-write.csv(res_nll, file = paste0(out_dir, "bincal_avgnll.csv"))
+write.csv(res_nll, file = file.path(out_dir, "bincal_avgnll.csv"))
