@@ -85,6 +85,13 @@ detail.
     calibration of deep transformation ensembles.
   - `sample-size-extrapolation.R`: Code for reproducing Figure B4.
 
+- `data/`: TODO
+
+- `intermediate-results/`: Intermediate results for reproducing all figures and
+  analyses from the manuscript.
+
+- `dependencies.R`: File for installing all dependencies.
+
 ## Session info
 
 TODO
