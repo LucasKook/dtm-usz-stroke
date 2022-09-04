@@ -41,3 +41,6 @@ vignettes/*.pdf
 figures/
 results/
 results-old/
+
+data/*.h5
+data/*.csv
