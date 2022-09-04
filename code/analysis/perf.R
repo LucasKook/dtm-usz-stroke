@@ -9,7 +9,8 @@ library(etram)
 # Directories -------------------------------------------------------------
 
 source(file.path("code", "functions", "functions_DE.R"))
-in_dir <- "intermediate-results"
+in_dir <- ifelse(file.exists(file.path("results", "stroke_merged_bincdf_ci.csv")),
+                 "results", "intermediate-results")
 out_dir <- "results"
 
 if (!dir.exists(out_dir))

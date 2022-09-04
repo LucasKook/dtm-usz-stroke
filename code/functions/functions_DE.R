@@ -548,6 +548,10 @@ boot_ci <- function(cdf_all, y_true_all, met_ref,
     abb <- if (meth == "avg") "avgl" else meth
     f <- paste0("wboot_", mod, loss, "_", abb, ".csv")
   }
+  
+  if (K == 2)
+    f <- paste0("bin", f)
+  
   write.csv(ci, file.path(out_dir, f), row.names = FALSE)
 }
 
