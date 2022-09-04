@@ -53,5 +53,5 @@ if (!require("rhdf5"))
 # Github packages
 
 remotes::install_github("LucasKook/ontram-pkg", ref = "v0.0-1")
-remotes::install_github("LucasKook/interpretable-deep-ensembles/etram", ref = "v0.0.1")
+remotes::install_github("LucasKook/interpretable-deep-ensembles/etram", ref = "v0.0.2")
 
