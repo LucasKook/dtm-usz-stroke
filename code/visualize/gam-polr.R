@@ -9,7 +9,7 @@ library(ggbeeswarm)
 library(rhdf5)
 theme_set(theme_bw() + theme(legend.position = "top"))
 
-inp <- ifelse(dir.exists("results"), "results", "intermediate-results")
+inp <- ifelse(dir.exists("results/gam-polr.csv"), "results", "intermediate-results")
 files <- file.path(inp, "gam-polr.csv")
 
 out_dir <- "figures"

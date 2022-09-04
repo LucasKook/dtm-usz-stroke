@@ -11,12 +11,12 @@ full-repro: dependencies
 	make partial-repro
 
 partial-repro: dependencies
-	$(SR) code/analyze/cal-binary.R
-	$(SR) code/analyze/cal-ordinal.R
-	$(SR) code/analyze/ci-binary.R
-	$(SR) code/analyze/ci-ordinal.R
-	$(SR) code/analyze/perf.R
-	$(SR) code/analyze/merge-results.R
+	$(SR) code/analysis/cal-binary.R
+	$(SR) code/analysis/cal-ordinal.R
+	$(SR) code/analysis/ci-binary.R
+	$(SR) code/analysis/ci-ordinal.R
+	$(SR) code/analysis/perf.R
+	# $(SR) code/analysis/merge-results.R
 	make figure-repro
 
 figure-repro: dependencies

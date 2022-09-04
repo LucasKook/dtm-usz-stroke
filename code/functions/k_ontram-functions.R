@@ -92,9 +92,9 @@ eval_all <- function(opreds, target) {
 
 run_experiment <- function(mod = c("cs", "ci", "cswox", "mcc"), fml = fm, B = 50,
                            nep = 100, bs = 1, lr = 5e-5, valid_size = 40,
-                           test_size = 40, oup = mod, Y = tY, X = tX, img = timg,
-                           mf = tmf, split = TRUE, ldat = NULL, augment = TRUE,
-                           warmstart = TRUE) {
+                           test_size = 40, oup = file.path("results", mod), 
+                           Y = tY, X = tX, img = timg, mf = tmf, split = TRUE,
+                           ldat = NULL, augment = TRUE, warmstart = TRUE) {
 
   mod <- match.arg(mod)
 

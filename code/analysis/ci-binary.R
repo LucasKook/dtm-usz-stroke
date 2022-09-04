@@ -28,7 +28,7 @@ fname_silsnll <- "stroke_sils"
 
 nsemi <- 6
 K <- 2
-tR <- 1000 # Bootstrap repetitions, reduce for faster computation (e.g. to 10)
+tR <- 10 # Bootstrap repetitions, reduce for faster computation (e.g. to 10)
 
 # Load results ------------------------------------------------------------
 
