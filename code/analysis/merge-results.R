@@ -1,6 +1,6 @@
 
 # Merge validation & test predictions, the observed outcome
-# and log odds-ratios  for all models separately into one file 
+# and log odds-ratios for all models separately into one file 
 
 # Dependencies ------------------------------------------------------------
 
