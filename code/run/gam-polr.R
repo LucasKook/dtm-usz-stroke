@@ -12,9 +12,9 @@ library(tidyverse)
 library(tram)
 library(mgcv)
 
-out <- "polr-gam"
+out <- file.path("results", "gam-polr")
 if (!dir.exists(out))
-  dir.create(out)
+  dir.create(out, recursive = TRUE)
 
 # Params ------------------------------------------------------------------
 
@@ -23,8 +23,8 @@ fm <- mrs3 ~ sexm + nihss_baseline + mrs_before + stroke_beforey + tia_beforey +
   rf_atrial_fibrillationy + rf_chdy
 
 ## Paths
-bpath <- "../data/dicom-3d.h5"
-bpathx <- "../data/baseline_data_zurich_prepared.csv"
+bpath <- file.path("data", "dicom-3d.h5")
+bpathx <- file.path("data", "baseline_data_zurich_prepared.csv")
 
 # Read data ---------------------------------------------------------------
 
@@ -58,7 +58,7 @@ for (run in 1:B) {
   idx <- sample.int(nrow(Y), nrow(Y) - 1L, replace = TRUE)
   tY <- Y[idx,]
   tX <- Y[idx,]
-  tage <- age[idx,]
+  tage <- age[idx,,drop=FALSE]
 
   ## Model
   mbl <- mod_baseline(ncol(tY))
@@ -71,22 +71,21 @@ for (run in 1:B) {
                 kernel_regularizer = regularizer_l2(1e-3)) %>%
     layer_dense(units = 16L, activation = "relu", kernel_regularizer = regularizer_l2(1e-3)) %>%
     layer_dense(units = 1L, kernel_regularizer = regularizer_l2(1e-3))
-  m <- keras_model(inputs = list(mbl$input, mim$input, msh$input),
-                   outputs = layer_concatenate(list(mbl$output, mim$output, msh$output)))
+  m <- k_ontram(mod_baseline = mbl, list_of_shift_models = list(mim, msh))
 
   ## Loss
-  loss <- ontram_logLik(ncol(Y))
+  loss <- k_ontram_loss(ncol(Y))
 
   ## Compile
-  compile(m, optimizer = optimizer_adam(lr = 1e-3), loss = loss)
+  compile(m, optimizer = optimizer_adam(learning_rate = 1e-3), loss = loss)
 
   ## Fit
-  fit(m, x = list(matrix(1, nrow(tX)), tage, tX), y = tY, batch_size = 1/7 * nrow(tX),
-      epochs = 1600, validation_split = 1/7, callbacks = list(callback_early_stopping()))
+  fit_k_ontram(m, x = list(tage, tX), y = tY, batch_size = 1/7 * nrow(tX),
+               epochs = 1600, validation_split = 1/7, callbacks = list(callback_early_stopping()))
 
   ## Re-compile
-  compile(m, optimizer = optimizer_adam(lr = 1e-4), loss = loss)
-  fit(m, x = list(matrix(1, nrow(tX)), tage, tX), y = tY, batch_size = 1/7 * nrow(tX),
+  compile(m, optimizer = optimizer_adam(learning_rate = 1e-4), loss = loss)
+  fit(m, x = list(tage, tX), y = tY, batch_size = 1/7 * nrow(tX),
       epochs = 800, validation_split = 1/7, callbacks = list(callback_early_stopping()))
 
   save_model_weights_hdf5(m, filepath = file.path(out, paste0("callback", run, ".h5")))
@@ -111,4 +110,5 @@ pdat <- data.frame(
   gam_upper = gpred0 + 1.96 * gpred$se.fit[, "s(age)"],
   nn = bind_cols(preds)
 )
+
 write.csv(pdat, file.path(out, "pdat.csv"), row.names = FALSE, quote = FALSE)
