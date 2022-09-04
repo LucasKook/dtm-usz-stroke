@@ -27,4 +27,4 @@ figure-repro: dependencies
 	$(SR) code/visualize/sample-size-extrapolation.R
 
 clean:
-	rm -rf results Rplots.pdf
+	rm -rf results Rplots.pdf figures
