@@ -20,9 +20,12 @@ library(etram)
 
 # Paths ------------------------------------------------------------------
 
-im_path <- "~/data-sets/stroke-lh/dicom-3d.h5"
-path <- "~/data-sets/stroke-lh/baseline_data_zurich_prepared.csv"
-out_dir <- "code/results/"
+im_path <- file.path("data", "dicom-3d.h5")
+path <- file.path("data", "baseline_data_zurich_prepared.csv")
+out_dir <- "results"
+
+if (!dir.exists(out_dir))
+  dir.create(out_dir)
 
 # Params ------------------------------------------------------------------
 

@@ -7,77 +7,79 @@
 
 ## Performance plots (test error)
 
-pl_met <- function(spl_met,
-                   indiv_met = NULL,
-                   ci,
-                   ref = NULL,
-                   rel = FALSE,
-                   weighted = TRUE,
-                   metrics = c("binnll", "brier", "eauc", "ebinacc"),
-                   facet_labs = c("binnll" = "Binary NLL",
-                                  "brier" = "Brier score",
-                                  "eauc" = "1 - AUC",
-                                  "ebinacc" = "1 - ACC",
-                                  "eacc" = "1 - ACC",
-                                  "nll" = "NLL",
-                                  "rps" = "RPS",
-                                  "eqwk" = "1 - QWK",
-                                  "cint" = "CITL",
-                                  "cslope" = "C slope"),
-                   ens_labs = c("avg" = "LIN-Avg",
-                                "avgll" = "LOG-Avg",
-                                "avgtrf" = "TRF-Avg",
-                                "linear" = "LIN-Ens",
-                                "log-linear" = "LOG-Ens",
-                                "trafo" = "TRF-Ens",
-                                "ref" = "XX"),
-                   ens_labs_noref = c("avg" = "LIN-Avg",
-                                      "avgll" = "LOG-Avg",
-                                      "avgtrf" = "TRF-Avg",
-                                      "linear" = "LIN-Ens",
-                                      "log-linear" = "LOG-Ens",
-                                      "trafo" = "TRF-Ens"),
-                   mod_labs = c("silscs" = expression(paste("SI-", CS[B], "-", LS[x])),
-                                "cils" = expression(paste(CI[B], "-", LS[x])),
-                                "cilsmrsbl" = expression(paste(CI[B], "-", LS[mRS])),
-                                "sics" = expression(paste("SI-", CS[B])),
-                                "ci" = expression(paste(CI[B])),
-                                "sils" = expression(paste("SI-", LS[x])),
-                                "cimrsbin" = expression(paste(CI[B], "-Binary")),
-                                "si" = "SI"),
-                   legend = TRUE,
-                   legend_title = "Method",
-                   legend_pos = "right",
-                   xlab = expression(lower%<-%complexity%->%higher),
-                   ylab = expression(paste(better%<-%test, " ", error%->%worse)),
-                   ylab_rel = "SI*'-'*LS[x]~worse%<-%difference~'in'~test~error%->%SI*'-'*LS[x]~better",
-                   ticks = TRUE,
-                   col_ens = c("avg" = qualitative_hcl(n = 3, l = 80)[1],
-                               "avgll" = qualitative_hcl(n = 3, l = 80)[2],
-                               "avgtrf" = qualitative_hcl(n = 3, l = 80)[3],
-                               "linear" = qualitative_hcl(n = 3, l = 40)[1],
-                               "log-linear" = qualitative_hcl(n = 3, l = 40)[2],
-                               "trafo" = qualitative_hcl(n = 3, l = 40)[3]),
-                   col_ref = "grey40",
-                   nrow = 1, ncol = 4,
-                   angle = 0,
-                   vjust = 0.5,
-                   hjust = 0.5,
-                   ebarwidth = 0.4,
-                   refebarwidth = 0.1,
-                   t.size = NULL) {
+pl_met <- function(
+  spl_met,
+  indiv_met = NULL,
+  ci,
+  ref = NULL,
+  rel = FALSE,
+  weighted = TRUE,
+  metrics = c("binnll", "brier", "eauc", "ebinacc"),
+  facet_labs = c("binnll" = "Binary NLL",
+                 "brier" = "Brier score",
+                 "eauc" = "1 - AUC",
+                 "ebinacc" = "1 - ACC",
+                 "eacc" = "1 - ACC",
+                 "nll" = "NLL",
+                 "rps" = "RPS",
+                 "eqwk" = "1 - QWK",
+                 "cint" = "CITL",
+                 "cslope" = "C slope"),
+  ens_labs = c("avg" = "LIN-Avg",
+               "avgll" = "LOG-Avg",
+               "avgtrf" = "TRF-Avg",
+               "linear" = "LIN-Ens",
+               "log-linear" = "LOG-Ens",
+               "trafo" = "TRF-Ens",
+               "ref" = "XX"),
+  ens_labs_noref = c("avg" = "LIN-Avg",
+                     "avgll" = "LOG-Avg",
+                     "avgtrf" = "TRF-Avg",
+                     "linear" = "LIN-Ens",
+                     "log-linear" = "LOG-Ens",
+                     "trafo" = "TRF-Ens"),
+  mod_labs = c("silscs" = expression(paste("SI-", CS[B], "-", LS[x])),
+               "cils" = expression(paste(CI[B], "-", LS[x])),
+               "cilsmrsbl" = expression(paste(CI[B], "-", LS[mRS])),
+               "sics" = expression(paste("SI-", CS[B])),
+               "ci" = expression(paste(CI[B])),
+               "sils" = expression(paste("SI-", LS[x])),
+               "cimrsbin" = expression(paste(CI[B], "-Binary")),
+               "si" = "SI"),
+  legend = TRUE,
+  legend_title = "Method",
+  legend_pos = "right",
+  xlab = expression(lower%<-%complexity%->%higher),
+  ylab = expression(paste(better%<-%test, " ", error%->%worse)),
+  ylab_rel = "SI*'-'*LS[x]~worse%<-%difference~'in'~test~error%->%SI*'-'*LS[x]~better",
+  ticks = TRUE,
+  col_ens = c("avg" = qualitative_hcl(n = 3, l = 80)[1],
+              "avgll" = qualitative_hcl(n = 3, l = 80)[2],
+              "avgtrf" = qualitative_hcl(n = 3, l = 80)[3],
+              "linear" = qualitative_hcl(n = 3, l = 40)[1],
+              "log-linear" = qualitative_hcl(n = 3, l = 40)[2],
+              "trafo" = qualitative_hcl(n = 3, l = 40)[3]),
+  col_ref = "grey40",
+  nrow = 1, ncol = 4,
+  angle = 0,
+  vjust = 0.5,
+  hjust = 0.5,
+  ebarwidth = 0.4,
+  refebarwidth = 0.1,
+  t.size = NULL
+) {
   if (rel) {
     sval <- spl_met %>%
       {if (weighted) filter(., mod == "sils", weights == "equal") else filter(., mod == "sils")} %>%
       dplyr::select(val, spl, metric)
-
+    
     spl_met <- left_join(spl_met, sval, by = c("metric", "spl"))
-
+    
     spl_met <- spl_met %>%
       {if (weighted) group_by(., mod, method, weights) else group_by(., mod, method)} %>%
       mutate(val = val.x - val.y) %>%
       filter(mod != "sils")
-
+    
     spl_met$mod <- factor(spl_met$mod,
                           levels = levels(spl_met$mod)[!(levels(spl_met$mod) %in% "sils")])
   }
@@ -85,7 +87,7 @@ pl_met <- function(spl_met,
   if (!is.factor(spl_met$mod)) spl_met$mod <- factor(spl_met$mod)
   ci <- ci %>% filter(mod %in% unique(spl_met$mod)) %>%
     mutate(mod = factor(mod, levels = levels(spl_met$mod)))
-
+  
   ggplot(data = spl_met %>% filter(metric %in% metrics, !(mod %in% ref)),
          aes(x = mod, y = val, group = interaction(mod, method),
              color = method, shape = spl)) +
@@ -495,7 +497,7 @@ boot_ci <- function(cdf_all, y_true_all, met_ref,
 
   if (!(mod %in% c("si", "sils"))) {
     if(weighted) {
-      w <- read.csv(paste0(in_dir, "w_", fname, ".csv"))
+      w <- read.csv(file.path(in_dir, paste0("w_", fname, ".csv")))
       tmp <- meth
       if(tmp == "avg") tmp <- "linear"
       if(tmp == "avgll") tmp <- "log-linear"
@@ -546,7 +548,7 @@ boot_ci <- function(cdf_all, y_true_all, met_ref,
     abb <- if (meth == "avg") "avgl" else meth
     f <- paste0("wboot_", mod, loss, "_", abb, ".csv")
   }
-  write.csv(paste0(out_dir, f), row.names = FALSE)
+  write.csv(file.path(out_dir, f), row.names = FALSE)
 }
 
 # Bootstrap for log OR ----------------------------------------------------
@@ -602,7 +604,7 @@ calc_calibration <- function(cdf_all, y_true_all, mod, meth,
 
   if (!(mod %in% c("si", "sils"))) {
     if(weighted) {
-      w <- read.csv(paste0(in_dir, "w_", fname, ".csv"))
+      w <- read.csv(file.path(in_dir, paste0("w_", fname, ".csv")))
       tmp <- meth
       if(tmp == "avg") tmp <- "linear"
       if(tmp == "avgll") tmp <- "log-linear"
