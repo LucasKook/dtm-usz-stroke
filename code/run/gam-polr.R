@@ -12,9 +12,9 @@ library(tidyverse)
 library(tram)
 library(mgcv)
 
-out <- file.path("results", "gam-polr")
+out <- file.path("results")
 if (!dir.exists(out))
-  dir.create(out, recursive = TRUE)
+  dir.create(out)
 
 # Params ------------------------------------------------------------------
 
