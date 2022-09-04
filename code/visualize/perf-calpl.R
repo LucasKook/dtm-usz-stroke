@@ -11,10 +11,13 @@ library(stringr)
 
 # Paths -------------------------------------------------------------------
 
-source("code/functions/functions_DE.R")
+source(file.path("code", "functions", "functions_DE.R"))
 
-in_dir <- "code/results/"
-out_dir <- "code/results/figures/"
+in_dir <- "intermediate-results"
+out_dir <- "figures"
+
+if (!dir.exists(out_dir))
+  dir.create(out_dir)
 
 fname_silscsnll <- "stroke_silscs_lossnll_wsyes_augyes"
 fname_cilsnll <- "stroke_cils_lossnll_wsyes_augyes"
@@ -35,7 +38,7 @@ ens <- 5
 
 f_met <- list.files(in_dir, pattern = "^met_")
 lys_met <- lapply(f_met, function(x) {
-  df <- read.csv(paste0(in_dir, x))
+  df <- read.csv(file.path(in_dir, x))
   df$mod <- str_split(x, "_|\\.", simplify = FALSE)[[1]][3]
   if (ncol(df) == 6) df <- df[df$topn == ens, -2]
   if (all(df$mod == "cimrsbinary")) df$mod <- "cimrsbin"
@@ -45,7 +48,7 @@ met_negloglik <- do.call("rbind", lys_met)
 
 f_indiv <- list.files(in_dir, pattern = "^indivmet_")
 lys_indiv <- lapply(f_indiv, function(x) {
-  df <- read.csv(paste0(in_dir, x))
+  df <- read.csv(file.path(in_dir, x))
   df$mod <- str_split(x, "_|\\.", simplify = FALSE)[[1]][3]
   if (all(df$mod == "cimrsbinary")) df$mod <- "cimrsbin"
   return(df)
@@ -58,7 +61,7 @@ indiv_negloglik <- do.call("rbind", lys_indiv)
 
 # ci nll
 f_nll_nw <- list.files(in_dir, pattern = "^binboot.*nll.*\\.csv$") # ^: start, $: end, .*: any pattern,
-lys_nll_nw <- lapply(f_nll_nw, function(x) read.csv(paste0(in_dir, x)))
+lys_nll_nw <- lapply(f_nll_nw, function(x) read.csv(file.path(in_dir, x)))
 cibin_nll_nw <- do.call("rbind", lys_nll_nw)
 
 # nll is similar to binary nll here
@@ -74,7 +77,7 @@ cibin_nll_nw <- cibin_nll_nw %>%
 
 # ci nll
 f_nll_nw <- list.files(in_dir, pattern = "^boot.*nll.*\\.csv$") # ^: start, $: end, .*: any pattern,
-lys_nll_nw <- lapply(f_nll_nw, function(x) read.csv(paste0(in_dir, x)))
+lys_nll_nw <- lapply(f_nll_nw, function(x) read.csv(file.path(in_dir, x)))
 ciord_nll_nw <- do.call("rbind", lys_nll_nw)
 
 # Reorder levels ----------------------------------------------------------
@@ -92,11 +95,11 @@ indiv_negloglik <- relev(indiv_negloglik, "metric", c(bin_metrics, ord_metrics))
 
 # Results calibration -----------------------------------------------------
 
-avg_nll <- read.csv(paste0(in_dir, "cal_avgnll.csv"))
-binavg_nll <- read.csv(paste0(in_dir, "bincal_avgnll.csv"))
+avg_nll <- read.csv(file.path(in_dir, "cal_avgnll.csv"))
+binavg_nll <- read.csv(file.path(in_dir, "bincal_avgnll.csv"))
 
-spl_nll <- read.csv(paste0(in_dir, "cal_splnll.csv"))
-binspl_nll <- read.csv(paste0(in_dir, "bincal_splnll.csv"))
+spl_nll <- read.csv(file.path(in_dir, "cal_splnll.csv"))
+binspl_nll <- read.csv(file.path(in_dir, "bincal_splnll.csv"))
 
 # Prep --------------------------------------------------------------------
 
@@ -174,7 +177,7 @@ binspl_nll <- pl_cal(avg = binavgnll %>% filter(method == "trafo", weights == "e
 plbin <- pl_binnll + labs(tag = "A") + 
   binspl_nll + labs(tag = "B")
 plbin + plot_layout(ncol = 1, heights = c(1, 1.7))
-ggsave(paste0(out_dir, "figure4.pdf"), height = 7, width = 8.5)
+ggsave(file.path(out_dir, "figure4.pdf"), height = 7, width = 8.5)
 
 # Code to produce Figure 5 ------------------------------------------------
 
@@ -205,7 +208,7 @@ spl_nll <- pl_cal(avg = avgnll %>% filter(method == "trafo", weights == "equal")
 plord <- pl_ordnll + labs(tag = "A") + 
   spl_nll + labs(tag = "B")
 plord + plot_layout(ncol = 1, heights = c(1, 1.7))
-ggsave(paste0(out_dir, "figure5.pdf"), height = 8, width = 7.5)
+ggsave(file.path(out_dir, "figure5.pdf"), height = 8, width = 7.5)
 
 # Code to produce Figures in Appendix -------------------------------------
 
@@ -220,7 +223,7 @@ pl_binnll_rel <- pl_met(spl_met = met_negloglik %>% filter(method == "trafo" | m
                         weighted = FALSE,
                         ebarwidth = 0.2)
 pl_binnll_rel
-ggsave(paste0(out_dir, "figureB2.pdf"), height = 3, width = 11.5)
+ggsave(file.path(out_dir, "figureB2.pdf"), height = 3, width = 11.5)
 
 # Code to produce Figure B3
 
@@ -233,5 +236,4 @@ pl_ordnll_rel <- pl_met(spl_met = met_negloglik_ord %>% filter(method == "trafo"
                         weighted = FALSE,
                         ebarwidth = 0.2)
 pl_ordnll_rel
-ggsave(paste0(out_dir, "figureB3.pdf"), height = 3, width = 8.8)
-
+ggsave(file.path(out_dir, "figureB3.pdf"), height = 3, width = 8.8)

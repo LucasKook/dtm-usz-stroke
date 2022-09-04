@@ -13,10 +13,13 @@ library(ggpubr)
 
 # Paths ------------------------------------------------------------------
 
-path_img <- "~/data-sets/stroke-lh/dicom-3d.h5"
-path_tab <- "~/data-sets/stroke-lh/baseline_data_zurich_prepared.csv"
-path_tab_raw <- "~/../hezo/stroke_perfusion/data/baseline_data_DWI.csv"
-out_dir <- "code/results/figures/"
+path_img <- file.path("data", "dicom-3d.h5")
+path_tab <- file.path("data", "baseline_data_zurich_prepared.csv")
+path_tab_raw <- file.path("data", "baseline_data_DWI.csv")
+out_dir <- "figures"
+
+if (!dir.exists(out_dir))
+  dir.create(out_dir)
 
 # Functions ---------------------------------------------------------------
 
@@ -120,4 +123,4 @@ ggarrange(pl_mrs_before, pl_nihss_baseline, pl_stroke_beforey,
           pl_rf_chdy, pl_sexm, pl_age,
           ncol = 4, nrow = 3,
           legend = "top", common.legend = TRUE)
-ggsave(paste0(out_dir, "figureB1.png"), width = 13, height = 8)
+ggsave(file.path(out_dir, "figureB1.pdf"), width = 13, height = 8)
