@@ -28,6 +28,7 @@ fname_silsnll <- "stroke_sils"
 
 nsemi <- 5
 K <- 7
+tR <- 10 # Bootstrap repetitions, reduce to save computing time (e.g. to 10)
 
 # Load results ------------------------------------------------------------
 
@@ -66,6 +67,7 @@ args_nll <- data.frame(cdf_all = "all_cdf", y_true_all = "all_y",
                                        fname_sicsnll, fname_cinll), each = 10),
                                  rep(c(fname_silsnll, fname_sinll), each = 1)),
                        in_dir = in_dir,
-                       out_dir = out_dir)
+                       out_dir = out_dir,
+                       R = tR)
 
 do.call(Map, c(f = boot_ci, args_nll))

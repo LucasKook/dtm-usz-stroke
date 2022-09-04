@@ -28,6 +28,7 @@ fname_silsnll <- "stroke_sils"
 
 nsemi <- 6
 K <- 2
+tR <- 1000 # Bootstrap repetitions, reduce for faster computation (e.g. to 10)
 
 # Load results ------------------------------------------------------------
 
@@ -42,7 +43,7 @@ all_cdf <- do.call("rbind", cdf_files)
 all_y <- read.csv(file.path(in_dir, "stroke_merged_biny.csv"))
 
 ## Load results of reference model SI-LS
-met_sils <-  read.csv(file = file.path(in_dir, "met_", fname_silsnll, ".csv"))
+met_sils <-  read.csv(file = file.path(in_dir, paste0("met_", fname_silsnll, ".csv")))
 met_sils <- met_sils %>% filter(!(metric %in% c("nll", "eacc"))) %>% 
   mutate(metric = replace(metric, metric == "binnll", "nll"),
          metric = replace(metric, metric == "ebinacc", "eacc"))
@@ -69,6 +70,7 @@ args_nll <- data.frame(cdf_all = "all_cdf", y_true_all = "all_y",
                                        fname_sicsnll, fname_cinll, fname_cimrsbinarynll), each = 10),
                                  rep(c(fname_silsnll, fname_sinll), each = 1)),
                        in_dir = in_dir,
-                       out_dir = out_dir)
+                       out_dir = out_dir,
+                       R = tR)
 
 do.call(Map, c(f = boot_ci, args_nll))

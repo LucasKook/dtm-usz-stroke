@@ -486,7 +486,7 @@ load_y_true_all <- function(all, K, t = c("test", "val", "train")) {
 boot_ci <- function(cdf_all, y_true_all, met_ref,
                     binary, mod, meth, K, loss,
                     weighted, avg,
-                    fname, in_dir, out_dir) {
+                    fname, in_dir, out_dir, R = 1000) {
 
   cdf_all <- eval(parse(text = cdf_all))
   y_true_all <- eval(parse(text = y_true_all))
@@ -514,21 +514,21 @@ boot_ci <- function(cdf_all, y_true_all, met_ref,
     }
     if (!avg) {
       # ci for ensembles
-      ci <- get_bs(lys_cdf_all = ens, y_true_all = y_true_all, R = 1000,
+      ci <- get_bs(lys_cdf_all = ens, y_true_all = y_true_all, R = R,
                    binary = binary, ncpus = 16, met_ref = met_ref)
     } else {
       # ci for avg across split
       if (!weighted) {
-        ci <- get_bs(lys_cdf_all = lys_cdf_all, y_true_all = y_true_all, R = 1000,
+        ci <- get_bs(lys_cdf_all = lys_cdf_all, y_true_all = y_true_all, R = R,
                      binary = binary, ncpus = 16, met_ref = met_ref)
       } else {
-        ci <- get_bs(lys_cdf_all = lys_cdf_all, y_true_all = y_true_all, R = 1000,
+        ci <- get_bs(lys_cdf_all = lys_cdf_all, y_true_all = y_true_all, R = R,
                      binary = binary, ncpus = 16,
                      weights = w, met_ref = met_ref)
       }
     }
   } else { # si, sils
-    ci <- get_bs(lys_cdf_all = lys_cdf_all, y_true_all = y_true_all, R = 1000,
+    ci <- get_bs(lys_cdf_all = lys_cdf_all, y_true_all = y_true_all, R = R,
                  binary = binary, ncpus = 16, met_ref = met_ref)
   }
   ci$mod <- mod
@@ -548,7 +548,7 @@ boot_ci <- function(cdf_all, y_true_all, met_ref,
     abb <- if (meth == "avg") "avgl" else meth
     f <- paste0("wboot_", mod, loss, "_", abb, ".csv")
   }
-  write.csv(file.path(out_dir, f), row.names = FALSE)
+  write.csv(ci, file.path(out_dir, f), row.names = FALSE)
 }
 
 # Bootstrap for log OR ----------------------------------------------------
