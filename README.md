@@ -9,12 +9,13 @@ stroke"](https://arxiv.org/abs/2206.13302)
 ## Install dependencies
 
 Deep transformation ensembles can be fitted using the `ontram` package. All
-necessary dependencies can be installed via
-```
-make dependencies
-```
-or by sourcing `dependencies.R` manually. Note that this requires `conda` to be
-present.
+necessary dependencies can be installed via `make dependencies` or by sourcing
+`dependencies.R` manually. Note that this requires an installation of `conda`.
+In steps:
+
+1. Install `conda`
+2. Run `make dependencies` or source `dependencies.R` manually
+3. Check package versions: `python3.6` and `tensorflow 2.2.0`
 
 ## Reproduce results
 
