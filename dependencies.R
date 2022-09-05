@@ -63,7 +63,7 @@ if (!require("tensorflow"))
 if (!require("keras"))
   install.packages("keras")
 
-install_keras(tensorflow = "2.2.0", envname = nenv)
+install_keras(method = "conda", tensorflow = "2.2.0", envname = nenv)
 
 # Github packages
 
