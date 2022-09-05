@@ -60,6 +60,7 @@ args_nll <- data.frame(cdf_all = "all_cdf", y_true_all = "all_y",
                        avg = c(rep(c(FALSE, FALSE, FALSE, TRUE,
                                      FALSE, FALSE, FALSE, TRUE, TRUE, TRUE), nsemi),
                                rep(FALSE, 2)),
+                       avg_acr_spl = FALSE,
                        cuts_fun = "cutf",
                        fname = c(rep(c(fname_silscsnll, fname_cilsnll, fname_cilsmrsblnll,
                                        fname_sicsnll, fname_cinll), each = 10),
@@ -70,6 +71,31 @@ args_nll <- data.frame(cdf_all = "all_cdf", y_true_all = "all_y",
 res_nll <- do.call(Map, c(f = calc_calibration, args_nll))
 res_nll <- bind_rows(res_nll)
 
+args_nll_spl <- data.frame(cdf_all = "all_cdf", y_true_all = "all_y",
+                       mod = c(rep(c("silscs", "cils", "cilsmrsbl",
+                                     "sics", "ci"), each = 10),
+                               rep(c("sils"), each = 2)),
+                       meth = c(rep(c("linear", "log-linear", "trafo", "avg",
+                                      "linear", "log-linear", "trafo",
+                                      "avg", "avgll", "avgtrf"), nsemi),
+                                rep(NA, 2)),
+                       K = K, loss = "nll",
+                       weighted = c(rep(c(rep(FALSE, 4), rep(TRUE, 6)), nsemi),
+                                    rep(c(FALSE, TRUE), each = 1)),
+                       avg = c(rep(c(FALSE, FALSE, FALSE, TRUE,
+                                     FALSE, FALSE, FALSE, TRUE, TRUE, TRUE), nsemi),
+                               rep(FALSE, 2)),
+                       avg_acr_spl = TRUE,
+                       cuts_fun = "cutf",
+                       fname = c(rep(c(fname_silscsnll, fname_cilsnll, fname_cilsmrsblnll,
+                                       fname_sicsnll, fname_cinll), each = 10),
+                                 rep(c(fname_silsnll), each = 2)),
+                       in_dir = in_dir)
+
+res_nll_spl <- do.call(Map, c(f = calc_calibration, args_nll_spl))
+res_nll <- bind_rows(res_nll_spl)
+
 # Save results ------------------------------------------------------------
 
 write.csv(res_nll, file = file.path(out_dir, "cal_avgnll.csv"))
+write.csv(res_nll_spl, file = file.path(out_dir, "cal_splnll.csv"))

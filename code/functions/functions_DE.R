@@ -597,7 +597,9 @@ relev <- function(d, var, levs) {
 
 calc_calibration <- function(cdf_all, y_true_all, mod, meth,
                              K, loss, weighted, avg,
-                             cuts_fun, fname, in_dir) {
+                             avg_acr_spl = FALSE,
+                             cuts_fun, fname, in_dir
+                             ) {
 
   cdf_all <- eval(parse(text = cdf_all))
   y_true_all <- eval(parse(text = y_true_all))
@@ -651,10 +653,13 @@ calc_calibration <- function(cdf_all, y_true_all, mod, meth,
   cal$method <- meth
   cal$mod <- mod
   if (!weighted) cal$weights <- "equal" else cal$weights <- "tuned"
-
-  # avg cal across all splits
-  avg_cal <- avg_across_spl(list(cal))
-  return(avg_cal)
+  
+  if (avg_acr_spl) {
+    return(cal)
+  } else {
+    # avg cal across all splits
+    return(avg_across_spl(list(cal)))
+  }
 }
 
 # calibration for one cdf (1 ensemble or 1 ensemble member)
