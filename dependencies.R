@@ -67,7 +67,7 @@ install_keras(method = "conda", tensorflow = "2.2.0", envname = nenv)
 
 # Github packages
 
-remotes::install_github("LucasKook/ontram-pkg", ref = "v0.0-1")
+remotes::install_github("LucasKook/ontram-pkg", ref = "v0.0-2")
 require(ontram)
 
 remotes::install_github("LucasKook/interpretable-deep-ensembles/etram", ref = "v0.0.2")
