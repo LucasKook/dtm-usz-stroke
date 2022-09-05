@@ -36,13 +36,14 @@ timg <- ontram:::.batch_subset(timg, as.numeric(row.names(tX)), dim(timg))
 # Run ---------------------------------------------------------------------
 
 N <- nrow(tX)
-ns <- floor(N / seq(4, 1, -0.5))
+ns <- floor(N / seq(4, 1, -0.5))[1:2]
 ts <- ceiling(ns * 0.8)
 vs <- ceiling(ns * 0.1)
 tes <- ns - ts - vs
 
-BB <- 30
+BB <- 2
 tmod <- "ci"
+nep <- 2
 
 fix_idx <- which(apply(tY, 1, which.max) == 6)
 
@@ -66,9 +67,9 @@ for (tns in seq_along(ns)) {
     nimg <- ontram:::.batch_subset(timg, idx, dim(timg))
     nmf <- tmf[idx, , drop = FALSE]
 
-    run_experiment(mod = tmod, B = 1, nep = 100, bs = 6, lr = 5e-5,
+    run_experiment(mod = tmod, B = 1, nep = nep, bs = 6, lr = 5e-5,
                    valid_size = vs[tns], test_size = tes[tns],
-                   oup = paste0(tmod, "_n", ns[tns], "_run", bb),
+                   oup = file.path("results", paste0(tmod, "_n", ns[tns], "_run", bb)),
                    Y = nY, X = nX, img = nimg, mf = nmf)
   }
 }

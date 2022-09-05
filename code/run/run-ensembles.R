@@ -1,4 +1,3 @@
-
 # Run ensembles of deep transformation models
 
 # Reproducibility ---------------------------------------------------------
@@ -53,7 +52,7 @@ im <- dat$im
 
 # save_ridx(nsplts = spl, prptest = 0.1, prpval = 0.1, tab_dat = tab_dat,
 #           fml = fml_cond, out_dir = out_dir, fname = "stroke")
-ridx <- get_ridx(out_dir, "stroke")
+ridx <- get_ridx("data", "stroke")
 
 # Run experiments ---------------------------------------------------------
 

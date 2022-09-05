@@ -57,21 +57,21 @@ for (run in 1:B) {
   ## Bootstrap
   idx <- sample.int(nrow(Y), nrow(Y) - 1L, replace = TRUE)
   tY <- Y[idx,]
-  tX <- Y[idx,]
+  tX <- X[idx,]
   tage <- age[idx,,drop=FALSE]
 
   ## Model
-  mbl <- mod_baseline(ncol(tY))
-  msh <- mod_shift(ncol(tX))
+  mbl <- mod_baseline(ncol(tY), name = "baseline")
+  msh <- mod_shift(ncol(tX), name = "shift")
   tmp <- get_weights(msh)
   tmp[[1]][] <- matrix(coef(tm)[names(coef(tm)) != "age"], ncol = 1)
   set_weights(msh, tmp)
-  mim <- keras_model_sequential() %>%
+  mim <- keras_model_sequential(name = "complex_shift") %>%
     layer_dense(input_shape = c(1L), units = 16L, activation = "relu",
                 kernel_regularizer = regularizer_l2(1e-3)) %>%
     layer_dense(units = 16L, activation = "relu", kernel_regularizer = regularizer_l2(1e-3)) %>%
     layer_dense(units = 1L, kernel_regularizer = regularizer_l2(1e-3))
-  m <- k_ontram(mod_baseline = mbl, list_of_shift_models = list(mim, msh))
+  m <- k_ontram(mbl, list(mim, msh))
 
   ## Loss
   loss <- k_ontram_loss(ncol(Y))
@@ -81,7 +81,9 @@ for (run in 1:B) {
 
   ## Fit
   fit_k_ontram(m, x = list(tage, tX), y = tY, batch_size = 1/7 * nrow(tX),
-               epochs = 1600, validation_split = 1/7, callbacks = list(callback_early_stopping()))
+               epochs = 1600, validation_split = 1/7,
+               callbacks = list(callback_early_stopping()),
+               view_metrics = FALSE)
 
   ## Re-compile
   compile(m, optimizer = optimizer_adam(learning_rate = 1e-4), loss = loss)
