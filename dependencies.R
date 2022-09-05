@@ -50,6 +50,21 @@ if (!require("BiocManager"))
 if (!require("rhdf5"))
   BiocManager::install("rhdf5")
 
+if (!require("reticulate"))
+  install.packages("reticulate")
+
+nenv <- "r-reticulate"
+conda_create(nenv, python_version = "3.6")
+use_condaenv(nenv)
+
+if (!require("tensorflow"))
+  install.packages("tensorflow")
+
+if (!require("keras"))
+  install.packages("keras")
+
+install_keras(tensorflow = "2.2.0gpu", envname = nenv)
+
 # Github packages
 
 remotes::install_github("LucasKook/ontram-pkg", ref = "v0.0-1")
