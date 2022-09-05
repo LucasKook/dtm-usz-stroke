@@ -67,7 +67,7 @@ for (tns in seq_along(ns)) {
     nimg <- ontram:::.batch_subset(timg, idx, dim(timg))
     nmf <- tmf[idx, , drop = FALSE]
 
-    run_experiment(mod = tmod, B = 1, nep = nep, bs = 6, lr = 5e-5,
+    run_experiment(mod = tmod, B = 1, nep = nep, bs = 6, learning_rate = 5e-5,
                    valid_size = vs[tns], test_size = tes[tns],
                    oup = file.path("results", paste0(tmod, "_n", ns[tns], "_run", bb)),
                    Y = nY, X = nX, img = nimg, mf = nmf)
