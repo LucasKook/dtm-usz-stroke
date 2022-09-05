@@ -16,6 +16,10 @@ out <- file.path("results")
 if (!dir.exists(out))
   dir.create(out)
 
+nep1 <- 200 # Number of epochs for training, reduce to save computation time
+nep2 <- 800 # Number of epochs for finetuning, reduce to save computation time
+B <- 50 # Number of models, reduce to save computation time
+
 # Params ------------------------------------------------------------------
 
 fm <- mrs3 ~ sexm + nihss_baseline + mrs_before + stroke_beforey + tia_beforey +
@@ -50,7 +54,6 @@ X <- ontram:::.rm_int(model.matrix(fm, polr_dat))
 age <- ontram:::.rm_int(model.matrix(~ age, polr_dat))
 Y <- to_categorical(model.response(model.frame(fm, polr_dat)))
 
-B <- 50
 preds <- list()
 
 for (run in 1:B) {
@@ -61,7 +64,7 @@ for (run in 1:B) {
   tage <- age[idx,,drop=FALSE]
 
   ## Model
-  mbl <- mod_baseline(ncol(tY), name = "baseline")
+  mbl <- k_mod_baseline(ncol(tY), name = "baseline")
   msh <- mod_shift(ncol(tX), name = "shift")
   tmp <- get_weights(msh)
   tmp[[1]][] <- matrix(coef(tm)[names(coef(tm)) != "age"], ncol = 1)
@@ -77,18 +80,18 @@ for (run in 1:B) {
   loss <- k_ontram_loss(ncol(Y))
 
   ## Compile
-  compile(m, optimizer = optimizer_adam(learning_rate = 1e-3), loss = loss)
+  compile(m, optimizer = optimizer_adam(learning_rate = 1e-2), loss = loss)
 
   ## Fit
-  fit_k_ontram(m, x = list(tage, tX), y = tY, batch_size = 1/7 * nrow(tX),
-               epochs = 1600, validation_split = 1/7,
-               callbacks = list(callback_early_stopping()),
-               view_metrics = FALSE)
+  fit(m, x = list(matrix(1, nrow = nrow(tX)), tage, tX), y = tY,
+      batch_size = 1/7 * nrow(tX), epochs = nep1, validation_split = 1/7,
+      view_metrics = FALSE)
 
   ## Re-compile
   compile(m, optimizer = optimizer_adam(learning_rate = 1e-4), loss = loss)
-  fit(m, x = list(tage, tX), y = tY, batch_size = 1/7 * nrow(tX),
-      epochs = 800, validation_split = 1/7, callbacks = list(callback_early_stopping()))
+  fit(m, x = list(matrix(1, nrow = nrow(tX)), tage, tX), y = tY, 
+      batch_size = 1/7 * nrow(tX), epochs = nep2, validation_split = 1/7, 
+      view_metrics = FALSE)
 
   save_model_weights_hdf5(m, filepath = file.path(out, paste0("callback", run, ".h5")))
 
