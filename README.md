@@ -13,7 +13,8 @@ necessary dependencies can be installed via
 ```
 make dependencies
 ```
-or by sourcing `dependencies.R` manually.
+or by sourcing `dependencies.R` manually. Note that this requires `conda` to be
+present.
 
 ## Reproduce results
 
@@ -22,12 +23,12 @@ of fitting deep transformation models (and their ensemble versions), we ensure
 three "levels of reproducibility".
 
 1. Full reproducibility `make full-repro`: Fits _all models from scratch_ and
-   reproduces all figures in the paper. Not possible to run on a machine without
-   access to at least one GPU and >64GB RAM.
+   reproduces all figures in the paper. Only possible to run on a machine with
+   GPU and >64GB RAM.
 
 2. Partial reproducibility `make partial-repro`: Takes results from
    `intermediate-results/` objects and reproduces the _analysis_ (i.e.,
-   bootstrap CIs) and _figures_.  Possible to run on a machine with >=16GB of
+   bootstrap CIs) and _figures_. Possible to run on a machine with >=16GB of
    RAM and without GPU.
 
 3. Figure reproducibility `make figure-repro`: Reproduces the _figures_ with the
