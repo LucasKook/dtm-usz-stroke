@@ -41,9 +41,9 @@ ts <- ceiling(ns * 0.8)
 vs <- ceiling(ns * 0.1)
 tes <- ns - ts - vs
 
-BB <- 2
+BB <- 30
 tmod <- "ci"
-nep <- 2
+nep <- 100
 
 fix_idx <- which(apply(tY, 1, which.max) == 6)
 
