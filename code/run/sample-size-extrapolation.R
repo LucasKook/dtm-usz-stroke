@@ -2,7 +2,7 @@
 # LK
 # Oct 21
 
-source(file.path("code", "functions", "k_ontram_experiments.R"), echo = TRUE)
+source(file.path("code", "functions", "k_ontram-functions.R"), echo = TRUE)
 
 # Params ------------------------------------------------------------------
 
