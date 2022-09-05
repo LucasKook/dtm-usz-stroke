@@ -13,7 +13,8 @@ library(tram)
 
 source(file.path("code", "functions", "functions_DE.R"))
 
-in_dir <- ifelse(dir.exists("results/lor_nll.csv"), "results", "intermediate-results")
+in_dir <- ifelse(dir.exists("results/lor_nll.csv"), "results",
+                 "intermediate-results")
 out_dir <- "figures"
 
 if (!dir.exists(out_dir))

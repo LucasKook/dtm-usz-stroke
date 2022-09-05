@@ -9,7 +9,8 @@ library(ggbeeswarm)
 library(rhdf5)
 theme_set(theme_bw() + theme(legend.position = "top"))
 
-inp <- ifelse(dir.exists("results/gam-polr.csv"), "results", "intermediate-results")
+inp <- ifelse(dir.exists("results/gam-polr.csv"), "results", 
+              "intermediate-results")
 files <- file.path(inp, "gam-polr.csv")
 
 out_dir <- "figures"
@@ -37,12 +38,16 @@ odat <- read_csv(bpathx, na = c("NA")) %>%
 ggplot(dat, aes(x = age, y = nn, group = model, color = "black")) +
   geom_line(alpha = 0.2) +
   geom_line(aes(y = gam, color = "darkblue"), data = filter(dat, model == "nn.1")) +
-  geom_line(aes(y = gam_lower, color = "darkblue"), lty = 2, data = filter(dat, model == "nn.1")) +
-  geom_line(aes(y = gam_upper, color = "darkblue"), lty = 2, data = filter(dat, model == "nn.1")) +
+  geom_line(aes(y = gam_lower, color = "darkblue"), lty = 2, 
+            data = filter(dat, model == "nn.1")) +
+  geom_line(aes(y = gam_upper, color = "darkblue"), lty = 2,
+            data = filter(dat, model == "nn.1")) +
   geom_line(aes(y = polr, color = "darkred"), data = filter(dat, model == "nn.1")) +
   labs(color = "Model", y = expression(hat(beta)(age)), x = "age (standardized)") +
-  scale_color_manual(name = "Model", values = c("black", "darkblue", "darkred"),
-                     labels = parse(text = c("SI*'-'*LS[tilde(x)]*'-'*CS[age]", "GAM", "SI*'-'*LS[x]"))) +
+  scale_color_manual(name = "Model",
+                     values = c("black", "darkblue", "darkred"),
+                     labels = parse(text = c("SI*'-'*LS[tilde(x)]*'-'*CS[age]",
+                                             "GAM", "SI*'-'*LS[x]"))) +
   ylim(-2, 2) +
   geom_rug(aes(x = age), inherit.aes = FALSE, data = odat, alpha = 0.3)
 

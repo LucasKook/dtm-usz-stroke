@@ -60,7 +60,7 @@ indiv_negloglik <- do.call("rbind", lys_indiv)
 ## Binary
 
 # ci nll
-f_nll_nw <- list.files(in_dir, pattern = "^binboot.*nll.*\\.csv$") # ^: start, $: end, .*: any pattern,
+f_nll_nw <- list.files(in_dir, pattern = "^binboot.*nll.*\\.csv$") 
 lys_nll_nw <- lapply(f_nll_nw, function(x) read.csv(file.path(in_dir, x)))
 cibin_nll_nw <- do.call("rbind", lys_nll_nw)
 
@@ -76,7 +76,7 @@ cibin_nll_nw <- cibin_nll_nw %>%
 ## Ordinal
 
 # ci nll
-f_nll_nw <- list.files(in_dir, pattern = "^boot.*nll.*\\.csv$") # ^: start, $: end, .*: any pattern,
+f_nll_nw <- list.files(in_dir, pattern = "^boot.*nll.*\\.csv$")
 lys_nll_nw <- lapply(f_nll_nw, function(x) read.csv(file.path(in_dir, x)))
 ciord_nll_nw <- do.call("rbind", lys_nll_nw)
 
@@ -86,7 +86,9 @@ bin_metrics <- c("binnll", "brier", "eauc", "ebinacc")
 ord_metrics <- c("nll", "rps", "eqwk")
 mods <- c("si", "sils", "sics", "silscs", "cimrsbin", "ci", "cilsmrsbl", "cils")
 
-met_negloglik <- met_negloglik %>% mutate(method = ifelse(method == "linear" & mod %in% c("si", "sils"), "ref", method))
+met_negloglik <- met_negloglik %>% 
+  mutate(method = ifelse(method == "linear" & 
+                           mod %in% c("si", "sils"), "ref", method))
 met_negloglik <- relev(met_negloglik, "metric", c(bin_metrics, ord_metrics))
 met_negloglik <- relev(met_negloglik, "method", c("trafo", "avg", "ref"))
 met_negloglik <- relev(met_negloglik, "mod", mods)
@@ -155,24 +157,30 @@ splrefnll <- spl_nll %>% filter(mod %in% c("sils")) %>%
 
 # Code to produce Figure 4A
 
-pl_binnll <- pl_met(spl_met = met_negloglik %>% filter(method == "trafo" | mod %in% c("si", "sils")),
-                    metrics = bin_metrics,
-                    ci = cibin_nll_nw %>% filter(method == "trafo" | mod %in% c("si", "sils")),
-                    ref = c("si", "sils"),
-                    rel = FALSE,
-                    legend = FALSE,
-                    weighted = FALSE,
-                    ebarwidth = 0.2)
+pl_binnll <- pl_met(
+  spl_met = met_negloglik %>% 
+    filter(method == "trafo" | mod %in% c("si", "sils")),
+  metrics = bin_metrics,
+  ci = cibin_nll_nw %>% 
+    filter(method == "trafo" | mod %in% c("si", "sils")),
+  ref = c("si", "sils"),
+  rel = FALSE,
+  legend = FALSE,
+  weighted = FALSE,
+  ebarwidth = 0.2
+)
 
 # Code to produce Figure 4B
 
-binspl_nll <- pl_cal(avg = binavgnll %>% filter(method == "trafo", weights == "equal"), 
-                     avg_ref = binavgrefnll %>% filter(weights == "equal"),
-                     spl_ref = binsplrefnll %>% filter(weights == "equal"),
-                     spl = binsplnll %>% filter(method == "trafo", weights == "equal"),
-                     legend = FALSE, weighted = FALSE,
-                     psize = 0.8, lsize = 0.4, ebarsize = 0.4, 
-                     strokep = TRUE)
+binspl_nll <- pl_cal(
+  avg = binavgnll %>% filter(method == "trafo", weights == "equal"), 
+  avg_ref = binavgrefnll %>% filter(weights == "equal"),
+  spl_ref = binsplrefnll %>% filter(weights == "equal"),
+  spl = binsplnll %>% filter(method == "trafo", weights == "equal"),
+  legend = FALSE, weighted = FALSE,
+  psize = 0.8, lsize = 0.4, ebarsize = 0.4, 
+  strokep = TRUE
+)
 
 plbin <- pl_binnll + labs(tag = "A") + 
   binspl_nll + labs(tag = "B")
@@ -182,28 +190,34 @@ ggsave(file.path(out_dir, "figure4.pdf"), height = 7, width = 8.5)
 # Code to produce Figure 5 ------------------------------------------------
 
 met_negloglik_ord <- met_negloglik  %>% filter(mod != "cimrsbin") %>%
-  mutate(mod = factor(mod, c("si", "sils", "sics", "silscs", "ci", "cilsmrsbl", "cils")))
+  mutate(mod = factor(mod, c("si", "sils", "sics", "silscs", "ci", 
+                             "cilsmrsbl", "cils")))
 
 # Code to produce Figure 5A
 
-pl_ordnll <- pl_met(spl_met = met_negloglik_ord %>% filter(method == "trafo" | mod %in% c("si", "sils")),
-                    metrics = ord_metrics,
-                    ci = ciord_nll_nw %>% filter(method == "trafo" | mod %in% c("si", "sils")),
-                    ref = c("si", "sils"),
-                    rel = FALSE,
-                    legend = FALSE,
-                    weighted = FALSE,
-                    ebarwidth = 0.2)
+pl_ordnll <- pl_met(
+  spl_met = met_negloglik_ord %>% 
+    filter(method == "trafo" | mod %in% c("si", "sils")),
+  metrics = ord_metrics,
+  ci = ciord_nll_nw %>% filter(method == "trafo" | mod %in% c("si", "sils")),
+  ref = c("si", "sils"),
+  rel = FALSE,
+  legend = FALSE,
+  weighted = FALSE,
+  ebarwidth = 0.2
+)
 
 # Code to produce Figure 5B
 
-spl_nll <- pl_cal(avg = avgnll %>% filter(method == "trafo", weights == "equal"), 
-                  avg_ref = avgrefnll %>% filter(weights == "equal"),
-                  spl_ref = splrefnll %>% filter(weights == "equal"),
-                  spl = splnll %>% filter(method == "trafo", weights == "equal"),
-                  legend = FALSE, weighted = FALSE,
-                  psize = 0.8, lsize = 0.4, ebarsize = 0.4, 
-                  strokep = T, ncol = 3)
+spl_nll <- pl_cal(
+  avg = avgnll %>% filter(method == "trafo", weights == "equal"), 
+  avg_ref = avgrefnll %>% filter(weights == "equal"),
+  spl_ref = splrefnll %>% filter(weights == "equal"),
+  spl = splnll %>% filter(method == "trafo", weights == "equal"),
+  legend = FALSE, weighted = FALSE,
+  psize = 0.8, lsize = 0.4, ebarsize = 0.4, 
+  strokep = T, ncol = 3
+)
 
 plord <- pl_ordnll + labs(tag = "A") + 
   spl_nll + labs(tag = "B")
@@ -214,26 +228,34 @@ ggsave(file.path(out_dir, "figure5.pdf"), height = 8, width = 7.5)
 
 # Code to produce Figure B2
 
-pl_binnll_rel <- pl_met(spl_met = met_negloglik %>% filter(method == "trafo" | mod %in% c("si", "sils")),
-                        metrics = bin_metrics,
-                        ci = cibin_nll_nw %>% filter(method == "trafo" | mod == "si"),
-                        ref = "si",
-                        rel = TRUE,
-                        legend = FALSE,
-                        weighted = FALSE,
-                        ebarwidth = 0.2)
+pl_binnll_rel <- pl_met(
+  spl_met = met_negloglik %>% 
+    filter(method == "trafo" | mod %in% c("si", "sils")),
+  metrics = bin_metrics,
+  ci = cibin_nll_nw %>% filter(method == "trafo" | mod == "si"),
+  ref = "si",
+  rel = TRUE,
+  legend = FALSE,
+  weighted = FALSE,
+  ebarwidth = 0.2
+)
+
 pl_binnll_rel
 ggsave(file.path(out_dir, "figureB2.pdf"), height = 3, width = 11.5)
 
 # Code to produce Figure B3
 
-pl_ordnll_rel <- pl_met(spl_met = met_negloglik_ord %>% filter(method == "trafo" | mod %in% c("si", "sils")),
-                        metrics = ord_metrics,
-                        ci = ciord_nll_nw %>% filter(method == "trafo" | mod == "si"),
-                        ref = "si",
-                        rel = TRUE,
-                        legend = FALSE,
-                        weighted = FALSE,
-                        ebarwidth = 0.2)
+pl_ordnll_rel <- pl_met(
+  spl_met = met_negloglik_ord %>% 
+    filter(method == "trafo" | mod %in% c("si", "sils")),
+  metrics = ord_metrics,
+  ci = ciord_nll_nw %>% filter(method == "trafo" | mod == "si"),
+  ref = "si",
+  rel = TRUE,
+  legend = FALSE,
+  weighted = FALSE,
+  ebarwidth = 0.2
+)
+
 pl_ordnll_rel
 ggsave(file.path(out_dir, "figureB3.pdf"), height = 3, width = 8.8)
