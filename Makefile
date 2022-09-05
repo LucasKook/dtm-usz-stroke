@@ -4,13 +4,13 @@ SR = Rscript --no-restore --no-save
 dependencies:
 	$(SR) dependencies.R
 
-full-repro: dependencies
+full-repro:
 	$(SR) code/run/run-ensembles.R
 	$(SR) code/run/gam-polr.R
 	$(SR) code/run/sample-size-extrapolation.R
 	make partial-repro
 
-partial-repro: dependencies
+partial-repro:
 	$(SR) code/analysis/merge-results.R
 	$(SR) code/analysis/perf.R
 	$(SR) code/analysis/ci-binary.R
@@ -19,7 +19,7 @@ partial-repro: dependencies
 	$(SR) code/analysis/cal-ordinal.R
 	make figure-repro
 
-figure-repro: dependencies
+figure-repro:
 	# $(SR) code/visualize/distr-predictors.R
 	$(SR) code/visualize/gam-polr.R
 	$(SR) code/visualize/lor.R
