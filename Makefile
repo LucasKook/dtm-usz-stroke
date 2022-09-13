@@ -20,7 +20,7 @@ partial-repro:
 	make figure-repro
 
 figure-repro:
-	# $(SR) code/visualize/distr-predictors.R
+	$(SR) code/visualize/distr-predictors.R
 	$(SR) code/visualize/gam-polr.R
 	$(SR) code/visualize/lor.R
 	$(SR) code/visualize/perf-calpl.R
