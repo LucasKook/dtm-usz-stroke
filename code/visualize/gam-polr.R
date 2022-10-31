@@ -23,8 +23,8 @@ if (!dir.exists(out_dir))
 dat <- read_csv(files) %>%
   gather("model", "nn", -age, -starts_with("gam"), -polr)
 
-bpath <- "~/data-sets/stroke-lh/dicom-3d.h5"
-bpathx <- "~/data-sets/stroke-lh/baseline_data_zurich_prepared.csv"
+bpath <- file.path("data", "dicom-3d.h5")
+bpathx <- file.path("data", "baseline_data_zurich_prepared.csv")
 pat <- data.frame(p_id = h5read(file = bpath, "/pat"))
 odat <- read_csv(bpathx, na = c("NA")) %>%
   left_join(pat, .) %>%
