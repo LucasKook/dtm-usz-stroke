@@ -30,7 +30,7 @@ if (!dir.exists(out_dir))
 
 bs <- 6
 lr <- 5*10^-5
-epochs <- 160
+epochs <- 1 # 160
 spl <- 6
 ens <- 5
 
