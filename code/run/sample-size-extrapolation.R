@@ -40,7 +40,7 @@ timg <- ontram:::.batch_subset(timg, as.numeric(row.names(tX)), dim(timg))
 # Run ---------------------------------------------------------------------
 
 N <- nrow(tX)
-ns <- floor(N / seq(4, 1, -0.5))[1:2]
+ns <- floor(N / seq(4, 1, -0.5))[1:2] # remove [1:2]
 ts <- ceiling(ns * 0.8)
 vs <- ceiling(ns * 0.1)
 tes <- ns - ts - vs
